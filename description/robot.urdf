@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="inertial_macros.xacro"/>
+    <xacro:include filename="wheel_macro.xacro"/>
+    <xacro:include filename="material_macros.xacro"/>
+    <xacro:include filename="gazebo.xacro"/>
+
+
+    <!-- BASE -->
+
+    <xacro:property name="base_width" value="0.1"/>
+    <xacro:property name="base_height" value="0.05"/>
+    
+    <xacro:macro name="shape">
+        <origin xyz="0 0 ${base_height / 2}" rpy="0 0 0"/>
+        <geometry>
+            <box size="${base_width} ${base_width} ${base_height}"/>
+        </geometry>
+    </xacro:macro>
+
+    <link name="base_link">
+        <visual>
+            <xacro:shape/>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <xacro:shape/>
+        </collision>
+        <xacro:inertial_box mass="0.5" x="${base_width}" y="${base_width}" z="${base_height}">
+            <origin xyz="0 0 ${base_height / 2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <gazebo reference="base_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <!-- BASE -->
+
+
+    <!-- WHEEL -->
+
+    <xacro:wheel prefix="left" reflect="1" offset_y="${base_width}" offset_z="${base_height}">
+        <material name="black"/>
+        <material>Gazebo/Black</material>
+    </xacro:wheel>
+
+    <xacro:wheel prefix="right" reflect="-1" offset_y="${base_width}" offset_z="${base_height}">
+        <material name="black"/>
+        <material>Gazebo/Black</material>
+    </xacro:wheel>
+
+    <!-- WHEEL -->
+
+
+    <!-- IMU -->
+
+    <link name="imu_link"/>
+    
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+    </joint>
+
+    <!-- IMU -->
+    
+</robot>

@@ -1,0 +1,2 @@
+pyjoystick==1.2.4 
+PyQt6==6.7.1 
